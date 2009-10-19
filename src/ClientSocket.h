@@ -4,17 +4,18 @@
 #define ClientSocket_class
 
 #include "Socket.h"
+using namespace std;
 
-
-class ClientSocket : private Socket
+class ClientSocket : Socket
 {
  public:
 
   ClientSocket ( std::string host, int port );
   virtual ~ClientSocket(){};
 
-  const ClientSocket& operator << ( const std::string& ) const;
-  const ClientSocket& operator >> ( std::string& ) const;
+  //const ClientSocket& operator << ( const string& ) const;
+  bool operator << ( const string& ) const;
+  int operator >> ( string& ) const;
 
 };
 

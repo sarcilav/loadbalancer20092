@@ -2,9 +2,9 @@
 
 #include "ClientSocket.h"
 #include "SocketException.h"
+using namespace std;
 
-
-ClientSocket::ClientSocket ( std::string host, int port )
+ClientSocket::ClientSocket (string host, int port )
 {
   if ( ! Socket::create() )
     {
@@ -15,11 +15,11 @@ ClientSocket::ClientSocket ( std::string host, int port )
     {
       throw SocketException ( "Could not bind to port." );
     }
-
+  //Socket::set_non_blocking(true);
 }
 
-
-const ClientSocket& ClientSocket::operator << ( const std::string& s ) const
+/*
+const ClientSocket& ClientSocket::operator << ( const string& s ) const
 {
   if ( ! Socket::send ( s ) )
     {
@@ -29,14 +29,26 @@ const ClientSocket& ClientSocket::operator << ( const std::string& s ) const
   return *this;
 
 }
-
-
-const ClientSocket& ClientSocket::operator >> ( std::string& s ) const
+*/
+bool ClientSocket::operator << ( const string& s ) const
 {
-  if ( ! Socket::recv ( s ) )
+  if ( ! Socket::send ( s ) )
+    {
+      throw SocketException ( "Could not write to socket." );
+    }
+
+  return Socket::is_valid();
+
+}
+
+int ClientSocket::operator >> ( string& s ) const
+{
+  int status;
+
+  if ( ! (status = Socket::recv ( s )))
     {
       throw SocketException ( "Could not read from socket." );
     }
 
-  return *this;
+  return status;
 }

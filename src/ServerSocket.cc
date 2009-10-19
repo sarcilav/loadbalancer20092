@@ -2,7 +2,7 @@
 
 #include "ServerSocket.h"
 #include "SocketException.h"
-
+using namespace std;
 
 ServerSocket::ServerSocket ( int port )
 {
@@ -28,7 +28,7 @@ ServerSocket::~ServerSocket()
 }
 
 
-const ServerSocket& ServerSocket::operator << ( const std::string& s ) const
+const ServerSocket& ServerSocket::operator << ( const string& s ) const
 {
   if ( ! Socket::send ( s ) )
     {
@@ -40,7 +40,7 @@ const ServerSocket& ServerSocket::operator << ( const std::string& s ) const
 }
 
 
-const ServerSocket& ServerSocket::operator >> ( std::string& s ) const
+const ServerSocket& ServerSocket::operator >> ( string& s ) const
 {
   if ( ! Socket::recv ( s ) )
     {
@@ -57,3 +57,5 @@ void ServerSocket::accept ( ServerSocket& sock )
       throw SocketException ( "Could not accept socket." );
     }
 }
+
+

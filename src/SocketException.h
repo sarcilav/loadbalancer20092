@@ -5,18 +5,18 @@
 #define SocketException_class
 
 #include <string>
-
+using namespace std;
 class SocketException
 {
  public:
-  SocketException ( std::string s ) : m_s ( s ) {};
+  SocketException ( string s ) : m_s ( s ) {};
   ~SocketException (){};
 
-  std::string description() { return m_s; }
+  string description() { return m_s; }
 
  private:
 
-  std::string m_s;
+  string m_s;
 
 };
 

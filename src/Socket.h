@@ -11,11 +11,11 @@
 #include <unistd.h>
 #include <string>
 #include <arpa/inet.h>
-
+using namespace std;
 
 const int MAXHOSTNAME = 200;
 const int MAXCONNECTIONS = 5;
-const int MAXRECV = 500;
+const int MAXRECV = 6553500;
 
 class Socket
 {
@@ -30,11 +30,11 @@ class Socket
   bool accept ( Socket& ) const;
 
   // Client initialization
-  bool connect ( const std::string host, const int port );
+  bool connect ( const string host, const int port );
 
   // Data Transimission
-  bool send ( const std::string ) const;
-  int recv ( std::string& ) const;
+  bool send ( const string ) const;
+  int recv ( string& ) const;
 
 
   void set_non_blocking ( const bool );

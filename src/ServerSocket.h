@@ -4,9 +4,9 @@
 #define ServerSocket_class
 
 #include "Socket.h"
+using namespace std;
 
-
-class ServerSocket : private Socket
+class ServerSocket : Socket
 {
  public:
 
@@ -14,8 +14,8 @@ class ServerSocket : private Socket
   ServerSocket (){};
   virtual ~ServerSocket();
 
-  const ServerSocket& operator << ( const std::string& ) const;
-  const ServerSocket& operator >> ( std::string& ) const;
+  const ServerSocket& operator << ( const string& ) const;
+  const ServerSocket& operator >> ( string& ) const;
 
   void accept ( ServerSocket& );
 
