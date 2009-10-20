@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]
+then
+    echo "Argumentos incorrectos\nUsage:\n balancerctl start|stop"
+    exit
+fi
+echo $1
+if [ $1 == "start" ]
+then
+    ./Balancer &
+    exit
+else
+    if [ $1 == "stop" ]
+    then
+        kill -9 `pidof Balancer` &
+        exit
+    fi
+fi
