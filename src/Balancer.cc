@@ -43,7 +43,6 @@ void init()
   while(cin>>server>>port)
     servers.push_back(SERVER(server,port));
   fclose(stdin);
-  connections = vector<int> (servers.size(),0);
 }
 void error(char *msg)
 {
@@ -53,10 +52,18 @@ void error(char *msg)
 
 SERVER select_server()
 {
+  freopen("balancer.log","a",stdout);
+  cout<<time(0)<<" ";
   if(method == "roundrobin")
-    return servers[server_in_use%servers.size()];
+    {
+      cout<<method<<" "<<servers[server_in_use%servers.size()].ip<<" "<<servers[server_in_use%servers.size()].port<<"\n";
+      fclose(stdout);
+      return servers[server_in_use%servers.size()];
+    }
   if(method == "lc")
     {
+      cout<<method<<"\n";
+
       int load=1<<30;
       int index;
       for(int i=0;i<servers.size();++i)
@@ -68,18 +75,22 @@ SERVER select_server()
           s >> loads;
           int t;
           sscanf(loads.c_str(),"%d",&t);
+          cout<<servers[i].ip<<" "<<servers[i].port<<" "<<t-2<<"\n";
           if(t<load)
             {
               index = i;
               load = t;
-              cerr<<t<<"\n";
             }
+          s.~ClientSocket();
         }
+      cout<<"Select "<<servers[index].ip<<" "<<servers[index].port<<" "<<load-2<<"\n";
+      fclose(stdout);
 
       return servers[index];
     }
   if(method == "lbs")
     {
+      cout<<method<<"\n";
       float load=1e7;
       int index;
       for(int i=0;i<servers.size();++i)
@@ -91,15 +102,46 @@ SERVER select_server()
           s >> loads;
           double t;
           sscanf(loads.c_str(),"%lf",&t);
+          cout<<servers[i].ip<<" "<<servers[i].port<<" "<<t<<"\n";
           if(t<load)
             {
               index = i;
               load = t;
-              cerr<<t<<"\n";
             }
+          s.~ClientSocket();
         }
-
+      cout<<"Select "<<servers[index].ip<<" "<<servers[index].port<<" "<<load<<"\n";
+      fclose(stdout);
       return servers[index];
+    }
+  if(method == "own")
+    {
+      cout<<method<<"\n";
+      int min_time=1<<30;
+      int index;
+      for(int i=0;i<servers.size();++i)
+        {
+          ClientSocket s(servers[i].ip,servers[i].port);
+          string loads;
+          int time = 0;
+          s << "GET \r\n\r\n";
+          while((s >> loads)<0)
+            {
+              ++time;
+            }
+          cout<<servers[i].ip<<" "<<servers[i].port<<" "<<time<<"\n";
+          if(time<min_time)
+            {
+              index = i;
+              min_time = time;
+            }
+
+          s.~ClientSocket();
+        }
+      cout<<"Select "<<servers[index].ip<<" "<<servers[index].port<<" "<<min_time<<"\n";
+      fclose(stdout);
+      return servers[index];
+
     }
 }
 int main()

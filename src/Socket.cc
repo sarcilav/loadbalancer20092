@@ -135,7 +135,7 @@ int Socket::recv ( string& s ) const
 
   if ( status == -1 )
     {
-      cout << "status == -1   errno == " << errno << "  in Socket::recv\n";
+      cerr << "status == -1   errno == " << errno << "  in Socket::recv\n";
       return -1;
     }
   else if ( status == 0 )
