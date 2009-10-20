@@ -17,7 +17,18 @@ int main (){
 
           string load;
           new_socket >> load;
-          system("uptime|cut -d: -f5|cut -d, -f1>ServerLoad.lb20092");
+          if(load == "lbs")
+            {
+              system("uptime|cut -d: -f5|cut -d, -f1>ServerLoad.lb20092");
+            }
+          else if(load == "lc")
+            {
+              system("netstat -puta |wc >ServerLoad.lb20092");
+            }
+          else
+            {
+              exit(0);
+            }
           FILE *input = fopen( "ServerLoad.lb20092", "r" );
           load = "";
           char buffer[255];

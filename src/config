@@ -1,5 +1,6 @@
-method: lc
+method: lbs
 port: 7777
 server     port
 127.0.0.1  3000
 127.0.0.1  80
+200.12.187.219 80
