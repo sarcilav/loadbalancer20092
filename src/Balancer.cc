@@ -1,3 +1,5 @@
+#include <time.h>
+#include <cassert>
 #include "SocketException.h"
 #include "ServerSocket.h"
 #include "ClientSocket.h"
@@ -55,21 +57,39 @@ int main()
                   new_sock >> data;//Attending new connection
 
                   cerr<<data;
-                  ClientSocket tt("localhost",3000);
+
+                  ClientSocket tt("200.12.180.5",80);
                   tt << data;//Sending request to back-end
 
 
+                  usleep(200000);
                   int total = (tt >> data);//Getting Response
-                  cerr<<data;
-                  new_sock << data;//Sending response to the user
 
-                  while(total-data.size()>0)
+                  cerr<<data;
+
+                  new_sock << data;//Sending response to the user
+                  cerr << "Voy a traer el resto\n";
+                  int i = 0;
+                  cerr<< "Total = "<<total<<"\n";
+                  while(total>0)
                     {
-                      total -= data.size();
-                      tt >> data;
-                      cerr<<data;
-                      new_sock << data;//Sending response to the user
+                      usleep(5000);
+                      total = tt >> data;
+                      ///cerr<< "Total = "<<total<<"\n";
+                      //cerr<<i++<<"\n";
+                      if(total > 0)
+                        {
+                          new_sock << data;
+
+                          cerr<<data;
+                          //cout<<data;
+                        }
+                      else
+                        {
+                          break;// error reading from socket
+                        }
                     }
+                    cerr<<"Sali\n";
                   tt.~ClientSocket();
                   exit(0);
                 }

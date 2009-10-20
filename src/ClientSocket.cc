@@ -15,7 +15,7 @@ ClientSocket::ClientSocket (string host, int port )
     {
       throw SocketException ( "Could not bind to port." );
     }
-  //Socket::set_non_blocking(true);
+  Socket::set_non_blocking(true);
 }
 
 /*
@@ -32,6 +32,7 @@ const ClientSocket& ClientSocket::operator << ( const string& s ) const
 */
 bool ClientSocket::operator << ( const string& s ) const
 {
+
   if ( ! Socket::send ( s ) )
     {
       throw SocketException ( "Could not write to socket." );
@@ -43,6 +44,7 @@ bool ClientSocket::operator << ( const string& s ) const
 
 int ClientSocket::operator >> ( string& s ) const
 {
+
   int status;
 
   if ( ! (status = Socket::recv ( s )))

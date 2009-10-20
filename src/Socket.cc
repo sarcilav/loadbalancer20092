@@ -125,7 +125,7 @@ bool Socket::send ( const string s ) const
 
 int Socket::recv ( string& s ) const
 {
-  char buf [ MAXRECV + 1 ];
+  static char buf [ MAXRECV + 1 ];
 
   s = "";
 
@@ -144,7 +144,7 @@ int Socket::recv ( string& s ) const
     }
   else
     {
-      s = buf;
+      s = string (buf,status);
       return status;
     }
 }
